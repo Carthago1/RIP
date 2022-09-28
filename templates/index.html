@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Store{% endblock %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
+    <h1>Магазин элетронных товаров</h1>
+    <h2>Категории товаров</h2>
+    <ol class="rounded">
+        {% for category in data.categories %}
+            {% include 'category_element.html' with element=category %}
+        {% empty %}
+            <li>Список категорий пуст</li>
+        {% endfor %}
+    </ol>
+{% endblock %}
