@@ -10,16 +10,9 @@
         <div class="ct">
             <p><strong>Наименование товара:</strong> {{ item.name }}</p>
             <p><b>Описание товара:</b> {{ item.description }}</p>
-            <p><strong>Цена товара:</strong> {{ item.price }}</p>
-            {% if item.id_item == 1 %}
-                <img src="/static/1.png" width="120px" height="150px">
-            {% elif item.id_item == 2 %}
-                <img src="/static/2.png" width="150px" height="150px">
-            {% elif item.id_item == 3 %}
-                <img src="/static/3.png" width="250px" height="150px">
-            {% elif item.id_item == 4 %}
-                <img src="/static/4.png" width="200px" height="150px">
-            {% endif %}
+            <p><strong>Цена товара:</strong> {{ item.price }} рублей</p>
+            <p><strong>Производитель:</strong> {{ item.manufacturer }}</p>
+            <img src="/static/images/{{ item.id_item }}.jpg" width="13%" height="20%">
         </div>
     {% empty %}
         <li>Список категорий пуст</li>

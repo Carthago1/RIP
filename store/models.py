@@ -28,7 +28,7 @@ class Items(models.Model):
     price = models.FloatField()
     description = models.CharField(max_length=255, blank=True, null=True)
     id_category = models.ForeignKey(Categories, models.DO_NOTHING, db_column='id_category')
-    date_of_release = models.DateField(blank=True, null=True)
+    manufacturer = models.CharField(max_length=30, blank=True, null=True)
     name = models.CharField(max_length=30)
 
     class Meta:
@@ -49,7 +49,6 @@ class Orderitems(models.Model):
 class Orders(models.Model):
     id_order = models.AutoField(primary_key=True)
     id_customer = models.ForeignKey('Customers', models.DO_NOTHING, db_column='id_customer')
-    id_item = models.ForeignKey('items', models.DO_NOTHING, db_column='id_item')
     date_of_order = models.DateTimeField(blank=True, null=True)
     date_of_processing = models.DateTimeField(blank=True, null=True)
     date_of_receiving = models.DateTimeField(blank=True, null=True)
