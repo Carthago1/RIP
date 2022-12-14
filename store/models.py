@@ -7,7 +7,7 @@ class Categories(models.Model):
     eng_title = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True     
         db_table = 'categories'
 
 
@@ -19,7 +19,7 @@ class Customers(models.Model):
     date_of_registration = models.DateField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True    
         db_table = 'customers'
 
 
@@ -30,9 +30,10 @@ class Items(models.Model):
     id_category = models.ForeignKey(Categories, models.DO_NOTHING, db_column='id_category')
     manufacturer = models.CharField(max_length=30, blank=True, null=True)
     name = models.CharField(max_length=30)
+    photo = models.ImageField(default=None)
 
     class Meta:
-        managed = False
+        managed = True    
         db_table = 'items'
 
 
@@ -42,7 +43,7 @@ class Orderitems(models.Model):
     id_item = models.ForeignKey(Items, models.DO_NOTHING, db_column='id_item')
 
     class Meta:
-        managed = False
+        managed = True      
         db_table = 'orderitems'
 
 
@@ -54,6 +55,6 @@ class Orders(models.Model):
     date_of_receiving = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True      
         db_table = 'orders'
 

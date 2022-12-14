@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,18 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'store.apps.StoreConfig',
-    'rest_framework'
+    'rest_framework',
+    'store',
+    "corsheaders"
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -69,6 +72,8 @@ TEMPLATES = [
     },
 ]
 
+CORS_ALLOW_ALL_ORIGINS=True
+
 WSGI_APPLICATION = 'project.wsgi.application'
 
 
@@ -76,15 +81,15 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'store',
-        'USER': 'dbuser',
-        'PASSWORD': '123',
-        'HOST': 'localhost',
-        'PORT': 3306,
-        'OPTIONS': {'charset': 'utf8'},
-        'TEST_CHARSET': 'utf8',
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'store',
+         'USER': 'root',
+         'PASSWORD': 'dimasdr2002',
+         'HOST': 'localhost',
+         'PORT': 3306,
+         'OPTIONS': {'charset': 'utf8'},
+         'TEST_CHARSET': 'utf8',
     }
 }
 
@@ -125,6 +130,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

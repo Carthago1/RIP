@@ -5,16 +5,16 @@ from rest_framework import serializers
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
-        fields = ['id_category', 'title', 'eng_title']
+        fields = '__all__'
 
 
 class ItemsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Items
-        fields = ['id_item', 'price', 'description', 'id_category', 'manufacturer', 'name']
+        fields = '__all__'
 
 
 class OrdersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Orders
-        fields = ['id_order', 'id_customer', 'date_of_order', 'date_of_processing', 'date_of_receiving']
+        fields = '__all__'

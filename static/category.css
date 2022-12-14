@@ -1,0 +1,11 @@
+h2 {
+    text-align: center;
+}
+body{
+    background-color: bisque;
+}
+.ct img {
+    position: absolute;
+    top: 50px;
+    right: 350px;
+}
