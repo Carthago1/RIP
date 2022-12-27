@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { axiosInstance } from '../api';
@@ -8,34 +8,35 @@ import { resetCategory, setCategories, setCategory, setProducts } from '../store
 export const HomePage = () => {
     const { categories, category: selectedCategory, products } = useSelector((store) => store.product);
     const dispatch = useDispatch();
+    const [q, setQ] = useState('');
+    const [min, setMin] = useState('');
+    const [max, setMax] = useState('');
+    const [value, setValue] = useState({});
 
     useEffect(() => {
         const fetchCategories = async () => {
-            await axiosInstance.get('/categories').then((response) =>{
-                dispatch(setCategories(response?.data))
-            });
+            await axiosInstance.get('categories').then((response) => dispatch(setCategories(response?.data)));
         };
 
         const fetchProducts = async (id) => {
-            await axiosInstance.get('/items').then((response) => {
-                dispatch(setProducts({ products: response?.data, id }))
-            });
+            await axiosInstance
+                .get('items-depth', { params: value })
+                .then((response) => dispatch(setProducts({ products: response?.data, id })));
         };
 
         fetchCategories();
         fetchProducts(selectedCategory.id_category);
-    }, [dispatch, selectedCategory]);
+    }, [dispatch, selectedCategory, value]);
 
     const handleCategory = async (id) => {
-        if (+selectedCategory.id_category === +id) {
+        setQ('');
+        setMin('');
+        setMax('');
+        setValue('');
+        if (id === selectedCategory.id_category) {
             dispatch(resetCategory());
         } else {
-            await axiosInstance.get(`/categories/${id}`).then((response) => {
-                dispatch(setCategory(response?.data))
-            });
-            await axiosInstance.get('/items').then((response) => {
-                dispatch(setProducts({ products: response?.data, id }))
-            });
+            await axiosInstance.get(`categories/${id}`).then((response) => dispatch(setCategory(response?.data)));
         }
     };
 
@@ -57,7 +58,39 @@ export const HomePage = () => {
                     </button>
                 ))}
             </div>
-            {products && (
+            <div>
+                <div>
+                    <p>Название</p>
+                    <input
+                        value={q}
+                        onChange={(e) => setQ(e.target.value)}
+                        placeholder='Введите значение...'
+                        className='py-1 px-3 w-80 rounded-lg bg-gray-200 outline-none placeholder-gray-700'
+                    />
+                </div>
+                <div>
+                    <p>Минимальная стоимость</p>
+                    <input
+                        value={min}
+                        onChange={(e) => setMin(e.target.value)}
+                        placeholder='Введите значение...'
+                        type='number'
+                        className='py-1 px-3 w-80 rounded-lg bg-gray-200 outline-none placeholder-gray-700'
+                    />
+                </div>
+                <div>
+                    <p>Максимальная стоимость</p>
+                    <input
+                        value={max}
+                        onChange={(e) => setMax(e.target.value)}
+                        placeholder='Введите значение...'
+                        type='number'
+                        className='py-1 px-3 w-80 rounded-lg bg-gray-200 outline-none placeholder-gray-700'
+                    />
+                </div>
+                <button onClick={() => setValue({ q, min_cost: min, max_cost: max })}>Искать</button>
+            </div>
+            {products.length > 0 && (
                 <div>
                     {products.map((product) => (
                         <ProductCard key={product.id_item} {...product} />
