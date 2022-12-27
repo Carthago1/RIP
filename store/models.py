@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Categories(models.Model):
@@ -11,25 +12,13 @@ class Categories(models.Model):
         db_table = 'categories'
 
 
-class Customers(models.Model):
-    id_customer = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    date_of_birth = models.DateField(blank=True, null=True)
-    date_of_registration = models.DateField(blank=True, null=True)
-
-    class Meta:
-        managed = True    
-        db_table = 'customers'
-
-
 class Items(models.Model):
     id_item = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=30)
     price = models.FloatField()
     description = models.CharField(max_length=255, blank=True, null=True)
-    id_category = models.ForeignKey(Categories, models.DO_NOTHING, db_column='id_category')
+    category = models.ForeignKey(Categories, on_delete=models.DO_NOTHING)
     manufacturer = models.CharField(max_length=30, blank=True, null=True)
-    name = models.CharField(max_length=30)
     photo = models.ImageField(default=None)
 
     class Meta:
@@ -37,24 +26,13 @@ class Items(models.Model):
         db_table = 'items'
 
 
-class Orderitems(models.Model):
-    id_order_item = models.AutoField(primary_key=True)
-    id_order = models.ForeignKey('Orders', models.DO_NOTHING, db_column='id_order')
-    id_item = models.ForeignKey(Items, models.DO_NOTHING, db_column='id_item')
+class Order(models.Model):
+    item = models.ForeignKey(Items, on_delete=models.DO_NOTHING)
+    customer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    status = models.TextField()
+    order_date = models.DateTimeField()
 
     class Meta:
-        managed = True      
-        db_table = 'orderitems'
-
-
-class Orders(models.Model):
-    id_order = models.AutoField(primary_key=True)
-    id_customer = models.ForeignKey('Customers', models.DO_NOTHING, db_column='id_customer')
-    date_of_order = models.DateTimeField(blank=True, null=True)
-    date_of_processing = models.DateTimeField(blank=True, null=True)
-    date_of_receiving = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = True      
+        managed = True
         db_table = 'orders'
 
